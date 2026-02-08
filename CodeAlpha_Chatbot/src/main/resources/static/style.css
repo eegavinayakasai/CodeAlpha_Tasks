@@ -1,32 +1,60 @@
+* {
+  box-sizing: border-box;
+}
 html, body {
   height: 100%;
   margin: 0;
+  overflow-x: hidden;
   background: radial-gradient(circle at top,
       #1e293b,
       #020617 60%);
   color: #e5e7eb;
+
 }
 
+/* =================== Main Container ======================= */
 .chat-container{
-  width: calc(100% - 35px);   /* 40px less than full width */
-  height: calc(100vh - 35px); /* 40px less than full height */
-
-  background: rgba(2,6,23,0.75);
-  backdrop-filter: blur(18px);
-  border-radius: 18px;
-  padding: 15px;
-  border: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-   box-shadow:
-    0 0 40px rgba(59,130,246,0.15),
-    inset 0 0 20px rgba(255,255,255,0.03);
+    height: 100vh;
+    width: 100%;
+    background: rgba(2,6,23,0.75);
+    backdrop-filter: blur(18px);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow:
+      0 0 40px rgba(59,130,246,0.15),
+      inset 0 0 20px rgba(255,255,255,0.03);
 }
+
+/* =================== Top Bar ======================= */
+
+.top-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px; /* space between buttons */
+}
+
+/* =================== Title ======================= */
+
+.name
+{
+      flex: 1;
+       display: flex;
+       align-items:center;
+       justify-content:center;
+      text-align: center;
+       background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+}
+
+/* =================== Chat box ======================= */
 
 .chat-box{
   flex: 1;
-  width: min(750px, 100%);
+  width:100%;
+  max-width:900px;
   margin: 0 auto;
   padding: 20px 0;
   display: flex;
@@ -51,10 +79,7 @@ html, body {
   }
 }
 
-.message-bot {
-  animation: botPop 0.25s ease-out;
-}
-
+/* =================== Messages ======================= */
 
 .message-bot,
 .message-user {
@@ -73,6 +98,7 @@ html, body {
   color: #e2e8f0;
   border: 1px solid rgba(255,255,255,0.05);
   align-self: flex-start;
+  animation: botPop 0.25s ease-out;
 }
 
 
@@ -86,35 +112,30 @@ html, body {
     color: white;
 }
 
-.name
-{
-     height: 100vh;
-      display: flex;
-      justify-content: center; /* horizontal */
-      align-items: center;
-    background: linear-gradient(90deg, #60a5fa, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-}
+/* =================== Input area ======================= */
 
 .chat-input{
-  width: min(750px, 100%);
-  margin: 0 auto;
-  padding: 20px 0;
+    width:100%;
+    max-width:900px;
+    margin: 0 auto;
 }
 
 .input-wrapper{
-   width: 805px;
+  position:relative;
+  width:100%;
   display: flex;
+  align-items:center;
   gap: 10px;
 }
 
+/* =================== Text input ======================= */
 
 .text{
+  flex:1;
   width: 100%;
+  max-width:100%;
   background: #111827;
-  height: 25px;
+  height: 40px;
   max-height: 150px;
   resize: none;
   overflow-y: auto;
@@ -141,18 +162,25 @@ html, body {
     display: none;
 }
 
+/* =================== Enter button ======================= */
+
 .enterbutton
 {
     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   color: white;
-   position: relative;
-   transform: translateX(-110%);
+   position: absolute;
+   transform: translateY(-50%);
    border-radius: 50px;
-   width: 55px;
-   overflow: none;
+   top: 50%;
+   right:1px;
+   width: 40px;
+   height: 40px;
    border: none;
    box-shadow: 0 0 12px rgba(139,92,246,0.45);
-   transition: transform 0.15s ease, color 0.15s ease;
+   transition:
+       transform 0.18s cubic-bezier(.34,1.56,.64,1),
+       box-shadow 0.18s ease;
+   will-change: transform;
 }
 
 .enterbutton:hover{
@@ -161,47 +189,39 @@ opacity: 0.9;
   cursor: pointer;
 }
 
-.enterbutton:active
-{
-    transform: translateX(-115%) scale(0.8);
+.enterbutton:active {
+  transform: translateY(-50%) scale(0.88);
+  box-shadow: 0 0 6px rgba(139,92,246,0.35);
 }
 
-.top-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px; /* space between buttons */
-}
+
+
+/* =================== Dropdowns ======================= */
 
  .dropdown {
-  position: relative;
-  display: inline-block;
-}
+   position: relative;
+ }
 
-.drop-button1 {
+ .drop-button1,
+ .drop-button2 {
+   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+   background: #111827;
+   color: #e5e7eb;
+   border: 1px solid #1f2937;
+   padding: 8px 14px;
+   border-radius: 20px;
+   cursor: pointer;
+ }
 
-  background: #111827;
-  font-size: medium;
-  color: #e5e7eb;
-  border: 1px solid #1f2937;
-  padding: 10px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-}
+ .drop-button1:hover,
+ .drop-button2:hover {
+   background: #1f2937;
+ }
 
-.drop-button2
-{
-
-    background: #111827;
-  font-size: medium;
-  color: #e5e7eb;
-  border: 1px solid #1f2937;
-  padding: 10px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-
-.dropdown-info1 {
+/* ================= DROPDOWN CONTENT ================= */
+.dropdown-info1,
+.dropdown-info2 {
+font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   display: none;
   position: absolute;
   top: 100%;
@@ -209,30 +229,21 @@ opacity: 0.9;
   width: 240px;
   background: #020617;
   border: 1px solid #1f2937;
-  color: #e5e7eb;
   border-radius: 12px;
   padding: 10px;
-  box-shadow: 0px 8px 20px rgba(0,0,0,0.5);
-  z-index:100;
+  z-index: 100;
 }
 
 .dropdown-info2 {
-  display: none;
-  position: absolute;
-
-  top: 100%;
-  left: 0;
-
-  width: 240px;
   max-height: 150px;
   overflow-y: auto;
-  background: #020617;
-  border: 1px solid #1f2937;
-  color: #e5e7eb;
-  border-radius: 12px;
-  padding: 5px;
-  box-shadow: 0px 8px 20px rgba(0,0,0,0.5);
-  z-index: 100;
+}
+
+.drop-button1:hover + .dropdown-info1,
+.dropdown-info1:hover,
+.drop-button2:hover + .dropdown-info2,
+.dropdown-info2:hover {
+  display: block;
 }
 
 
@@ -240,42 +251,10 @@ opacity: 0.9;
 {
     display:none;
 }
-.drop-button2:hover
-{
-        background: #1f2937;
-        color: white;
-        transition: background-color 0.5s,color 0.25s;
-}
 
-.drop-button1:hover
-{
-    background: #1f2937;
-    color: white;
-    transition: background-color 0.5s,color 0.25s;
-}
+/* ================= INFO ITEMS ================= */
 
-.drop-button2:hover + .dropdown-info2,
-.dropdown-info2:hover
-{
-    transition: 0.5s;
-      display: block;
-      color: #1f2937;
-}
-
-.drop-button1:hover + .dropdown-info1,
-.dropdown-info1:hover
-{
-    transition: 0.5s;
-  display: block;
-  color: #1f2937;
-}
-
-.questions
-{
-    padding: 10px;
-    border-radius: 10px;
-}
-
+.questions,
 .information {
   padding: 10px;
   border-radius: 10px;
@@ -286,11 +265,7 @@ opacity: 0.9;
     color: white;
 }
 
-.questions:hover
-{
-    background: #1f2937;
-}
-
+.questions:hover,
 .information:hover {
   background: #1f2937;
 }
@@ -300,6 +275,18 @@ opacity: 0.9;
   font-size: 12px;
   color: #94a3b8;
 }
+
+/* ================= MOBILE FIX ================= */
+
+@media (max-width: 768px) {
+  .chat-box,
+  .chat-input {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+}
+
 
 
 
