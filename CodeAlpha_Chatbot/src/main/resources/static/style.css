@@ -5,10 +5,11 @@ html, body {
   height: 100%;
   margin: 0;
   overflow-x: hidden;
-  background: radial-gradient(circle at top,
-      #1e293b,
-      #020617 60%);
-  color: #e5e7eb;
+  /*background: radial-gradient(circle at top,*/
+  /*    #1e293b,*/
+  /*    #020617 60%);*/
+  /*color: #e5e7eb;*/
+    background: linear-gradient(135deg, #1e1e2f, #0f172a)
 
 }
 
@@ -84,7 +85,6 @@ html, body {
 .message-bot,
 .message-user {
   border-radius: 15px;
-  background: grey;
   padding: 8px 12px;
   font-size: larger;
   width: fit-content;
@@ -93,10 +93,10 @@ html, body {
 
 
 .message-bot {
-  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-  box-shadow: 0 6px 16px rgba(80,120,255,0.25);
+  background: rgb(88 88 214 / 0.85);
+  box-shadow: 0 0 8px rgba(80,120,255,0.25);
   color: #e2e8f0;
-  border: 1px solid rgba(255,255,255,0.05);
+  border: none;
   align-self: flex-start;
   animation: botPop 0.25s ease-out;
 }
@@ -203,7 +203,8 @@ opacity: 0.9;
  }
 
  .drop-button1,
- .drop-button2 {
+ .drop-button2,
+ .drop-button3{
    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
    background: #111827;
    color: #e5e7eb;
@@ -213,14 +214,17 @@ opacity: 0.9;
    cursor: pointer;
  }
 
+
  .drop-button1:hover,
- .drop-button2:hover {
+ .drop-button2:hover,
+ .drop-button3:hover{
    background: #1f2937;
  }
 
 /* ================= DROPDOWN CONTENT ================= */
 .dropdown-info1,
-.dropdown-info2 {
+.dropdown-info2,
+.dropdown-info3{
 font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   display: none;
   position: absolute;
@@ -239,10 +243,68 @@ font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-seri
   overflow-y: auto;
 }
 
+.dropdown-info3
+{
+    max-height: 450px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#clearHistoryBtn {
+  align-self: flex-start;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.24);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+#clearHistoryBtn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(249, 115, 22, 0.28);
+}
+
+#clearHistoryBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 12px rgba(239, 68, 68, 0.2);
+}
+
+#historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#historyList p {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.9);
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
 .drop-button1:hover + .dropdown-info1,
 .dropdown-info1:hover,
 .drop-button2:hover + .dropdown-info2,
-.dropdown-info2:hover {
+.dropdown-info2:hover,
+.drop-button3:hover + .dropdown-info3,
+.dropdown-info3:hover
+{
   display: block;
 }
 
@@ -251,6 +313,12 @@ font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-seri
 {
     display:none;
 }
+
+.dropdown-info3::-webkit-scrollbar
+{
+    display:none;
+}
+
 
 /* ================= INFO ITEMS ================= */
 

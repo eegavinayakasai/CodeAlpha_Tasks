@@ -1,6 +1,9 @@
 package com.evs.chatbot.service;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.context.annotation.ScopedProxyMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +11,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Service
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class NlpService
 {
 

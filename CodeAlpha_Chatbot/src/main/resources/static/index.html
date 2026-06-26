@@ -4,16 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EVS Chatbot</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/style.css" />
 </head>
 
 <body>
-
 <div class="chat-container">
     <div class="top-bar">
-        <!-- EVS Chatbot dropdown -->
         <div class="dropdown">
-            <button class="drop-button1">EVS Chatbot ⮟</button>
+            <button class="drop-button1">EVS Chatbot</button>
 
             <div class="dropdown-info1">
                 <div class="information">
@@ -24,9 +22,8 @@
             </div>
         </div>
 
-        <!-- Questions dropdown -->
         <div class="dropdown">
-            <button class="drop-button2">Questions you can ask ⮟</button>
+            <button class="drop-button2">Questions you can ask</button>
 
             <div class="dropdown-info2">
                 <div class="questions">
@@ -36,7 +33,7 @@
                         <li>what can you do</li>
                         <li>are you fine</li>
                         <li>what are you doing</li>
-                        <li>what’s up</li>
+                        <li>what's up</li>
                         <li>what are you</li>
                         <li>are you human</li>
                         <li>why are you here</li>
@@ -64,10 +61,19 @@
                 </div>
             </div>
         </div>
+
+        <div class="dropdown">
+            <button class="drop-button3">Live History ⮟</button>
+            <div class="dropdown-info3">
+                <div class="history">
+                    <button type="button" id="clearHistoryBtn">Clear history</button>
+                    <div id="historyList"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="chat-box" id="chatBox">
-
         <div class="name"><h1>EVS Chatbot</h1></div>
     </div>
 
@@ -77,13 +83,14 @@
             <button class="enterbutton" id="sendBtn">➤</button>
         </div>
     </div>
-
 </div>
 
 <script>
     const chatBox = document.getElementById("chatBox");
     const userInput = document.getElementById("userInput");
     const sendBtn = document.getElementById("sendBtn");
+    const historyList = document.getElementById("historyList");
+    const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
     function addMessage(text, type) {
       const msg = document.createElement("div");
@@ -94,17 +101,57 @@
       chatBox.scrollTop = chatBox.scrollHeight;
     }
 
+    function renderHistory(messages) {
+      historyList.innerHTML = "";
+
+      if (!messages.length) {
+        historyList.innerHTML = "<p>No chat history yet.</p>";
+        return;
+      }
+
+      messages.forEach((message) => {
+        const item = document.createElement("p");
+        item.innerText = `${message.role === "user" ? "You" : "Bot"}: ${message.text}`;
+        historyList.appendChild(item);
+      });
+    }
+
+    async function fetchHistory() {
+      const response = await fetch("/api/history");
+      return response.json();
+    }
+
+    async function loadHistory() {
+      try {
+        const messages = await fetchHistory();
+        // messages.forEach((message) => addMessage(message.text, message.role));
+        renderHistory(messages);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function refreshHistory() {
+      try {
+        const messages = await fetchHistory();
+        renderHistory(messages);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     async function sendMessage() {
       const message = userInput.value.trim();
       if (message === "") return;
 
       addMessage(message, "user");
       userInput.value = "";
+
       const typingDiv = document.createElement("div");
-        typingDiv.className = "message-bot";
-        typingDiv.innerText = "Typing..."
-        chatBox.appendChild(typingDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
+      typingDiv.className = "message-bot";
+      typingDiv.innerText = "Typing...";
+      chatBox.appendChild(typingDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
 
       try {
         const response = await fetch("/api/chat", {
@@ -114,21 +161,31 @@
         });
 
         const reply = await response.text();
-        const delay = Math.floor(Math.random() * 1000) + 1000; // 1000–2000 ms
+        const delay = Math.floor(Math.random() * 1000) + 1000;
 
-    setTimeout(() => {
-      typingDiv.remove();
-      addMessage(reply, "bot");
-    }, delay);
-
-
+        setTimeout(async () => {
+          typingDiv.remove();
+          addMessage(reply, "bot");
+          await refreshHistory();
+        }, delay);
       } catch (err) {
-        addMessage("⚠️ Backend not running on port 8080.", "bot");
+        typingDiv.remove();
+        addMessage("Backend not running on port 8080.", "bot");
         console.error(err);
       }
     }
 
     sendBtn.addEventListener("click", sendMessage);
+
+    clearHistoryBtn.addEventListener("click", async () => {
+      try {
+        await fetch("/api/history", { method: "DELETE" });
+        chatBox.innerHTML = '<div class="name"><h1>EVS Chatbot</h1></div>';
+        renderHistory([]);
+      } catch (err) {
+        console.error(err);
+      }
+    });
 
     userInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey) {
@@ -136,7 +193,8 @@
         sendMessage();
       }
     });
-</script>
 
+    loadHistory();
+</script>
 </body>
 </html>
